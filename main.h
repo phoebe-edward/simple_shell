@@ -11,5 +11,5 @@
 #define MAX_COMMAND_LENGTH 100
 int Hundle(void);
 int prompt(void);
-
+int Path(void);
 #endif

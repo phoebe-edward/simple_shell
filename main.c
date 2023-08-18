@@ -6,7 +6,8 @@
  */
 int main(void)
 {
-    prompt();
-     Hundle();
+  //    prompt();
+  //   Hundle();
+   Path();
     return 0;
 }
