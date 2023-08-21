@@ -1,82 +1,101 @@
 #include "main.h"
-#define MAX_ARGS 10
+
+int compareStrings(const char *str1, const char *str2);
+
+void executeCommand(char *cmd, char *args[]);
+
+void token(char *command);
+/**
+ * compareStrings - Compare two strings.
+ * @str1: The first string to compare.
+ * @str2: The second string to compare.
+ *
+ * Returns: 1 if the strings are equal, otherwise 0.
+ */
+
+int compareStrings(const char *str1, const char *str2)
+{
+	while (*str1 && *str2 && *str1 == *str2)
+	{
+	str1++;
+	str2++;
+	}
+	return (*str1 == '\0' && *str2 == '\0');
+}
+/**
+ * executeCommand - Execute a command with given arguments.
+ *
+ * @cmd: The command to execute.
+ * @args: An array of arguments for the command.
+ */
+void executeCommand(char *cmd, char *args[])
+{
+	pid_t pid = fork();
+
+	if (pid < 0)
+	{
+	char error_msg[] = "Forking failed\n";
+
+	write(STDOUT_FILENO, error_msg, sizeof(error_msg) - 1);
+	return;
+	}
+	else if (pid == 0)
+	{
+	if (access(cmd, X_OK) == 0)
+	{
+	execve(cmd, args, NULL);
+	char error_msg[] = "Error executing command\n";
+
+	write(STDOUT_FILENO, error_msg, sizeof(error_msg) - 1);
+	_exit(EXIT_FAILURE);
+	}
+	else if (compareStrings(cmd, "ls"))
+	{
+	char *ls_args[] = {"/bin/ls", "-la", NULL};
+
+	execve(ls_args[0], ls_args, NULL);
+	char error_msg[] = "Error executing command\n";
+
+	write(STDOUT_FILENO, error_msg, sizeof(error_msg) - 1);
+	_exit(EXIT_FAILURE);
+	}
+	else
+	{
+	char error_msg[] = "No such file or directory\n";
+
+	write(STDOUT_FILENO, cmd, strlen(cmd));
+	write(STDOUT_FILENO, ": ", 2);
+	write(STDOUT_FILENO, error_msg, sizeof(error_msg) - 1);
+	_exit(EXIT_FAILURE);
+	}
+	}
+	else
+	{
+	waitpid(pid, NULL, 0);
+	}
+}
 
 /**
- * prompt - Reads user input and executes commands.
+ * token - Tokenize and execute a command.
  *
- * Return: Always 0.
+ * @command: The input command to tokenize and execute.
  */
-int Hundle(void)
+void token(char *command)
 {
-    char *command = NULL;
-    size_t len = 0;
-    ssize_t read;
+	char *args[MAX_ARGS];
+	char *token = strtok(command, " ");
+	int arg_count = 0;
 
-    while (1)
-    {
-        printf("#cisfun$ ");
-        read = getline(&command, &len, stdin);
+	while (token != NULL && arg_count < MAX_ARGS - 1)
+	{
+	args[arg_count] = token;
+	arg_count++;
+	token = strtok(NULL, " ");
+	}
+	args[arg_count] = NULL;
 
-        if (read == -1)
-        {
-            printf("\n");
-            break; // EOF (Ctrl+D)
-        }
-
-        if (read > 0 && command[read - 1] == '\n')
-        {
-            command[read - 1] = '\0';
-        }
-
-        // Tokenize the command and arguments
-        char *args[MAX_ARGS + 2];  // +2 for command and NULL terminator
-        int argc = 0;
-        char *token = strtok(command, " ");
-        while (token != NULL && argc < MAX_ARGS)
-        {
-            args[argc++] = token;
-            token = strtok(NULL, " ");
-        }
-        args[argc] = NULL;
-
-        if (argc > 0)
-        {
-            pid_t pid = fork();
-
-            if (pid < 0)
-            {
-                perror("Forking failed");
-                continue;
-            }
-            else if (pid == 0)
-            {
-                if (access(args[0], X_OK) == 0)
-                {
-                    execve(args[0], args, NULL);
-                    perror("Error executing command");
-                    exit(EXIT_FAILURE);
-                }
-                else if (strcmp(args[0], "ls") == 0)
-                {
-                    char *ls_args[] = {"/bin/ls", "-la", NULL};
-                    execve(ls_args[0], ls_args, NULL);
-                    perror("Error executing command");
-                    exit(EXIT_FAILURE);
-                }
-                else
-                {
-                    printf("%s: No such file or directory\n", args[0]);
-                    exit(EXIT_FAILURE);
-                }
-            }
-            else
-            {
-                int status;
-                waitpid(pid, &status, 0);
-            }
-        }
-    }
-
-    free(command);
-    return 0;
+	if (arg_count > 0)
+	{
+	executeCommand(args[0], args);
+	}
 }
