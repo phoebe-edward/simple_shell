@@ -5,6 +5,7 @@ int compareStrings(const char *str1, const char *str2);
 void executeCommand(char *cmd, char *args[]);
 
 void token(char *command);
+
 /**
  * compareStrings - Compare two strings.
  * @str1: The first string to compare.
@@ -12,7 +13,6 @@ void token(char *command);
  *
  * Returns: 1 if the strings are equal, otherwise 0.
  */
-
 int compareStrings(const char *str1, const char *str2)
 {
 	while (*str1 && *str2 && *str1 == *str2)
@@ -63,7 +63,7 @@ void executeCommand(char *cmd, char *args[])
 	{
 	char error_msg[] = "No such file or directory\n";
 
-	write(STDOUT_FILENO, cmd, strlen(cmd));
+	write(STDOUT_FILENO, cmd, sizeof(cmd));
 	write(STDOUT_FILENO, ": ", 2);
 	write(STDOUT_FILENO, error_msg, sizeof(error_msg) - 1);
 	_exit(EXIT_FAILURE);
@@ -74,7 +74,6 @@ void executeCommand(char *cmd, char *args[])
 	waitpid(pid, NULL, 0);
 	}
 }
-
 /**
  * token - Tokenize and execute a command.
  *
