@@ -7,9 +7,6 @@
  */
 int main(int argc, char **argv)
 {
-	int val;
-
-	val = task_1(argv);
-	(void)argc;
-	return (val);
+	prompt();	
+	return (0);
 }

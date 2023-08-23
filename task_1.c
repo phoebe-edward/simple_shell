@@ -1,48 +1,71 @@
 #include "shell.h"
-/**
- * task_1 - make simple shell with complete path
- * @argv: pointer to pointer to arguments
- * Return: 0
- */
-int task_1(char **argv)
-{
-	char *line = NULL, *args[2] = {NULL, NULL};
-	size_t n = 0;
-	ssize_t num;
-	int status;
-	pid_t pid;
 
-	while (1)
-	{
-		if (isatty(STDIN_FILENO))
-			write(STDIN_FILENO, "#cisfun$ ", 9);
-		num = getline(&line, &n, stdin);
-		if (num == -1)
-		{
-			perror("Error for getline: "), free(line);
-			return (1);
-		}
-		_strcspn(line);
-		args[0] = line;
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("Error for fork: "), free(line);
-			return (1);
-		}
-		if (pid == 0)
-		{
-			if (execve(args[0], args, NULL) == -1)
-			{
-				perror(argv[0]);
-				return (1);
-			}
-		}
-		else
-		{
-			wait(&status);
-		}
-	}
-	free(line);
-	return (0);
+/**
+ * executeCommand - Executes given command, managing child process,
+ * permissions, and errors.
+ * @command: Command to execute
+ */
+void executeCommand(const char *command)
+{
+        if (access(command, X_OK) == 0)
+        {
+        pid_t pid = fork();
+
+        if (pid < 0)
+        {
+        perror("Forking failed");
+        return;
+        }
+        else if (pid == 0)
+        {
+        char *args[] = {(char *)command, NULL};
+
+        if (execve(command, args, NULL) == -1)
+        {
+        perror("Error executing command");
+        exit(EXIT_FAILURE);
+        }
+        }
+        else
+        {
+        int status;
+
+        waitpid(pid, &status, 0);
+        }
+        }
+        else
+        {
+        printf("%s: No such file or directory\n", command);
+        }
+}
+
+/**
+ * prompt - Displays a prompt and executes entered commands.
+ * Return: Always 0
+ */
+int prompt(void)
+{
+        char *command = NULL;
+        size_t len = 0;
+        ssize_t read;
+
+        while (1)
+        {
+        if (isatty(STDIN_FILENO))
+        printf("#cisfun$ ");
+        read = getline(&command, &len, stdin);
+
+        if (read == -1)
+        {
+        printf("\n");
+        break;/* EOF (Ctrl+D)*/
+        }
+        if (read > 0 && command[read - 1] == '\n')
+        {
+        command[read - 1] = '\0';
+        }
+        executeCommand(command);
+        }
+        free(command);
+        return (0);
 }
