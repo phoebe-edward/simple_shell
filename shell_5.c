@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "shell_5.h"
 /**
  * main - entry point (task 1, 3, 4 and 5)
  * @argc: number of args
@@ -25,8 +25,6 @@ int main(int argc, char **argv, char **env)
 			perror("Error for getline: "), free(line);
 			return (1);
 		}
-		if (line == NULL)
-			printf("HERE LINE IS NULL!!!!!!!!!!!!!\n");
 		_strcspn(line);
 		if (_strncmp(line, "exit", 4) == 0)
 			return (0);
@@ -46,7 +44,6 @@ int main(int argc, char **argv, char **env)
 			line = NULL;
 			continue;
 		}
-		printf("before checking slash, line is: %s\n", line);
 		slash = _check_slash(line);
 		if (slash == -1)
 		{
@@ -55,7 +52,6 @@ int main(int argc, char **argv, char **env)
 		}
 		if (slash == 1)
 		{
-			printf("slash = 1, line: %s\n", line);
 			full_path = _search_PATH(line);
 			if (full_path == NULL)
 			{

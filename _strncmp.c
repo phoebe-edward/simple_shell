@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell_5.h"
 /**
  * _strncmp - string compare n characters
  * @s1: first string
