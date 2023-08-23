@@ -10,21 +10,21 @@
 
 int main(int ac, char **av, char *envp[])
 {
-	char *line = NULL, *pathcommand = NULL, *path = NULL;
+	/*char *line = NULL, *pathcommand = NULL, *path = NULL;
 	size_t bufsize = 0;
 	ssize_t linesize = 0;
 	char **command = NULL, **paths = NULL;
 	(void)envp, (void)av;
 	if (ac < 1)
 		return (-1);
-	signal(SIGINT, handle_signal);
-	while (1)
-	{
-		free_buffers(command);
+	signal(SIGINT, handle_signal);*/
+	/*while (1)
+	{*/
+		/*free_buffers(command);
 		free_buffers(paths);
-		free(pathcommand);
+		free(pathcommand);*/
 		prompt_user();
-		linesize = getline(&line, &bufsize, stdin);
+		/*linesize = getline(&line, &bufsize, stdin);
 		if (linesize < 0)
 			break;
 		info.ln_count++;
@@ -45,6 +45,7 @@ int main(int ac, char **av, char *envp[])
 	}
 	if (linesize < 0 && flags.interactive)
 		write(STDERR_FILENO, "\n", 1);
-	free(line);
+	free(line);*/
 	return (0);
+	
 }
