@@ -1,25 +1,15 @@
-#ifndef SHELL_H
-#define SHELL_H
-
+#ifndef MAIN_H
+#define MAIN_H
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <dirent.h>
-#define MAX_ARGS 10
+#define BUFFER_SIZE 1024
 
-/* Declare the environment variables manually */
-extern char **environ;
-
-#define MAX_COMMAND_LENGTH 100
-int Hundle(void);
-int prompt_user(void);
-int Path(void);
-/* put task number 4 here */
-int enve(void);
-int string_equal(const char *s1, const char *s2);
-//void write_string(int fd, const char *str)
+// Function declarations
+void display_prompt();
+void execute_command(char *command);
 
 #endif
