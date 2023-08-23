@@ -23,6 +23,8 @@ int task_1(char **argv)
 			perror("Error for getline: "), free(line);
 			return (1);
 		}
+		if (num == 0)
+			break;
 		args[0] = _strcspn(line);
 		if (_fork_fcn(line, args, status, argv) == 1)
 			return (1);
