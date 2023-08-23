@@ -6,12 +6,15 @@ void executeCommand(char *cmd, char *args[]);
 
 void token(char *command);
 
+/* Documentation for compareStrings() */
+
 /**
  * compareStrings - Compare two strings.
  * @str1: The first string to compare.
  * @str2: The second string to compare.
  *
- * Returns: 1 if the strings are equal, otherwise 0.
+ * Returns:
+ *  1 if the strings are equal, otherwise 0.
  */
 int compareStrings(const char *str1, const char *str2)
 {

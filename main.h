@@ -20,6 +20,7 @@ int Path(void);
 /* put task number 4 here */
 int enve(void);
 int string_equal(const char *s1, const char *s2);
+char *custom_getline(void);
 //void write_string(int fd, const char *str)
 
 #endif
