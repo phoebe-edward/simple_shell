@@ -7,9 +7,9 @@
  */
 int main(int argc, char **argv)
 {
-	int return_val;
+	int val;
 
-	return_val = task_1(argv);
+	val = task_1(argv);
 	(void)argc;
-	return (return_val);
+	return (val);
 }
