@@ -1,9 +1,0 @@
-#include "shell.h"
-/**
- * main_0 - entry point
- */
-int main(void)
-{
-	task_0();
-	return (0);
-}

@@ -6,7 +6,7 @@
  * @argv: arguments
  * Return: 0
  */
-int main(int argc, char **argv)
+int main(void)
 {
 	prompt();
 	return (0);
