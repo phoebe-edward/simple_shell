@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <unistd.h>
+extern char **environ;
 void task_0(void);
 int task_1(char **argv);
 int _fork_fcn(char *line, char **args, int status, char **argv);
