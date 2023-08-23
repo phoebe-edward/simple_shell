@@ -1,12 +1,14 @@
 #include "shell.h"
+
 /**
- * main - entry point (task 1, 3, 4 and 5)
+ * main - entry point
  * @argc: number of args
  * @argv: arguments
- * Return: (0)
+ * Return: 0
  */
 int main(int argc, char **argv)
 {
-	prompt();	
+	prompt();
 	return (0);
 }
+
