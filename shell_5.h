@@ -15,4 +15,5 @@ char *_strcat(char *dest, char *src);
 int _check_slash(char *command);
 char *_search_PATH(char *command);
 char *_strdup(char *str);
+void task_0(void);
 #endif
