@@ -27,7 +27,10 @@ int task_1(char **argv)
 			break;
 		args[0] = _strcspn(line);
 		if (_fork_fcn(line, args, status, argv) == 1)
+		{
+			free(line);
 			return (1);
+		}
 		if (!isatty(STDIN_FILENO))
 			break;
 	}
@@ -56,7 +59,7 @@ int _fork_fcn(char *line, char **args, int status, char **argv)
 	{
 		if (execve(args[0], args, environ) == -1)
 		{
-			perror(argv[0]);
+			perror(argv[0]), free(line);
 			return (1);
 		}
 	}
