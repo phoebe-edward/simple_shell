@@ -19,7 +19,7 @@ list_t *add_node(list_t **head, const char *str, int num)
 	new_header->num = num;
 	if (str)
 	{
-		new_head->str = _strdup(str);
+		new_header->str = _strdup(str);
 		if (!new_header->str)
 		{
 			free(new_header);
@@ -110,7 +110,7 @@ int delete_node_at_index(list_t **head, unsigned int index)
 	node = *head;
 	while (node)
 	{
-		if (i == index)
+		if (j == index)
 		{
 			previous_node->next = node->next;
 			free(node->str);

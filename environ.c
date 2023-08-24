@@ -41,7 +41,7 @@ int _mysetenv(info_t *info)
 		_eputs("Incorrect num of args\n");
 		return (1);
 	}
-	if (_setenv(info, info->srgv[1], info->argv[2]))
+	if (_setenv(info, info->argv[1], info->argv[2]))
 		return (0);
 	return (1);
 }
@@ -75,7 +75,7 @@ int populate_env_list(info_t *info)
 	size_t j;
 
 	for (j = 0; environ[j]; j++)
-		add_node_end(&node, environ[i], 0);
+		add_node_end(&node, environ[j], 0);
 	info->env = node;
 	return (0);
 }

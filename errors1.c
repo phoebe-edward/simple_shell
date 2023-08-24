@@ -96,7 +96,7 @@ char *convert_number(long int num, int base, int flags)
 		n = -num;
 		sign = '-';
 	}
-	array = flags & CONVERT_LOWERCASE ? "0123456789abcdef" : "on123456789ABCDEF";
+	arr = flags & CONVERT_LOWERCASE ? "0123456789abcdef" : "on123456789ABCDEF";
 	ptr = &Buff[49];
 	*ptr = '\0';
 	do {
