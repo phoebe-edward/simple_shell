@@ -7,72 +7,83 @@
 #define BUFFER_SIZE 1024
 
 /**
- * main - Simple UNIX command line interpreter.
+ * display_prompt - Display the shell prompt.
+ */
+void display_prompt(void)
+{
+	printf("#cisfun$ ");
+	fflush(stdout);
+}
+
+/**
+ * execute_command - Execute a command in the shell.
+ * @command: The command to execute.
+ */
+void execute_command(const char *command)
+{
+	char *args[2] = {NULL, NULL};
+
+	args[0] = (char *)command;
+
+	if (access(args[0], X_OK) == 0)
+	{
+	pid_t pid = fork();
+
+	if (pid == -1)
+	{
+	perror("fork");
+	exit(EXIT_FAILURE);
+	}
+	if (pid == 0)
+	{
+	execve(args[0], args, NULL);
+	perror("execve");
+	exit(EXIT_FAILURE);
+	}
+	else
+	{
+	wait(NULL);
+	}
+	}
+	else
+	{
+	printf("%s: command not found\n", command);
+	}
+}
+
+/**
+ * main - Entry point of the shell program.
  *
  * Return: Always 0.
  */
 int main(void)
 {
-    char buffer[BUFFER_SIZE];
-    char *newline;
-    char *args[2] = {NULL, NULL};
-    ssize_t bytes_read;
-    size_t buffer_len = BUFFER_SIZE;
+	char buffer[BUFFER_SIZE];
+	ssize_t bytes_read;
+	size_t buffer_len = BUFFER_SIZE;
 
-    while (1)
-    {
-        /* Display prompt */
-        printf("#cisfun$ ");
-        fflush(stdout);
+	while (1)
+	{
+	display_prompt();
 
-        /* Read user input */
-        bytes_read = getline(&buffer, &buffer_len, stdin);
-        if (bytes_read == -1)
-        {
-            if (feof(stdin)) /* Handle end of file (Ctrl+D) */
-            {
-                printf("\n");
-                break;
-            }
-            perror("getline");
-            exit(EXIT_FAILURE);
-        }
+	bytes_read = getline(&buffer, &buffer_len, stdin);
+	if (bytes_read == -1)
+	{
+	if (feof(stdin))
+	{
+	printf("\n");
+	break;
+	}
+	perror("getline");
+	exit(EXIT_FAILURE);
+	}
 
-        /* Remove trailing newline */
-        newline = strchr(buffer, '\n');
-        if (newline)
-            *newline = '\0';
+	char *newline = strchr(buffer, '\n');
 
-        /* Execute command */
-        args[0] = buffer;
-        if (access(args[0], X_OK) == 0) /* Check if executable exists */
-        {
-            pid_t pid = fork();
-            if (pid == -1)
-            {
-                perror("fork");
-                exit(EXIT_FAILURE);
-            }
-            if (pid == 0)
-            {
-                /* Child process */
-                execve(args[0], args, NULL);
-                perror("execve");
-                exit(EXIT_FAILURE);
-            }
-            else
-            {
-                /* Parent process */
-                wait(NULL); /* Wait for the child process to finish */
-            }
-        }
-        else
-        {
-            /* Executable not found */
-            printf("%s: command not found\n", buffer);
-        }
-    }
+	if (newline)
+	*newline = '\0';
+	execute_command(buffer);
+	}
 
-    return (0);
+	return (0);
 }
-
