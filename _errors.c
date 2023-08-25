@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 
 /**
  *_eputs - prints an input string
@@ -52,7 +52,7 @@ int _eputchar(char c)
 int _putfd(char c, int fd)
 {
 	static int i;
-	static char buf[WRITE_BUF_SIZE);
+	static char buf[WRITE_BUF_SIZE];
 
 	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
 	{
